@@ -1,0 +1,103 @@
+<html>
+<head>
+<script type="text/javascript">
+<!--
+var winonload = window.onload;
+
+function createCanvas(id, width, height) {
+    var c = document.createElement("canvas");
+    
+    c.id = id;
+    c.setAttribute("width", "" + width);
+    c.setAttribute("height", "" + height);
+    
+    return c;
+}
+
+function createDiv(id, width, height) {
+    var d = document.createElement("div");
+    
+    d.id = id;
+    d.style.width = "" + width + "px";
+    d.style.height = "" + height + "px";
+    
+    return d;
+}
+
+
+function fillCanvas(canvas) {
+    "Fills canvas with randomly colored pixels"
+    
+    // "1" - 0 is 1
+    var width = canvas.getAttribute("width") - 0;
+    var height = canvas.getAttribute("height") - 0;
+
+    // alert(width);
+    
+    if(canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+        for(var i = 0; i < height; i++) {
+            for(var j=0; j < width; j++) {
+                var randomGray = 100 + Math.floor(Math.random()*156);
+                ctx.fillStyle = "rgb(" + randomGray + ", " + randomGray + ", " + randomGray + ")";
+                ctx.fillRect(i, j, 1, 1);
+            }
+        }
+    }
+}
+
+function fillCanvas2(canvas) {
+    // "1" - 0 is 1
+    var width = canvas.getAttribute("width") - 0;
+    var height = canvas.getAttribute("height") - 0;
+    
+    var count = width * height;
+
+    if(canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+    
+        for(var i = 0; i < count; i++) {
+            var randomX = Math.floor(Math.random()*width);
+            var randomY = Math.floor(Math.random()*height);
+            
+            var randomGray = 100 + Math.floor(Math.random()*156);
+        
+            ctx.fillStyle = "rgb(" + randomGray + ", " + randomGray + ", " + randomGray + ")";
+            ctx.fillRect(randomX, randomY, 1, 1);
+        }
+    }
+}
+
+function createPatternDiv(divSize, patternSize) {
+    "Create a square div of size divSize with random repeating square pattern of size patternSize as background"
+    
+    // id will be div2 if patternSize is 2
+    var div = createDiv("div" + patternSize, divSize, divSize);
+    
+    var canvas = createCanvas("canvas" + patternSize, patternSize, patternSize);
+    fillCanvas2(canvas);
+    div.style.backgroundImage = "url('" + canvas.toDataURL() + "')";
+
+    div.style.marginBottom = "10px";
+    
+    div.innerHTML = "Pattern size: " + patternSize + "x" + patternSize;
+    return div;
+}
+
+window.onload = function() {
+    if(winonload) {
+        winonload();
+    }
+
+    for(var i=100; i<=120; i++) {
+         document.body.appendChild(createPatternDiv(300, i));
+        //document.body.appendChild(createCanvas("c"+i, 100, 100));
+    }
+};
+-->
+</script>
+</head>
+<body>
+
+</body>
+</html>
