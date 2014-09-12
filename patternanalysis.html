@@ -68,6 +68,58 @@ function fillCanvas2(canvas) {
     }
 }
 
+
+function fillCanvasR(canvas) {
+   // "1" - 0 is 1
+   var width = canvas.getAttribute("width") - 0;
+   var height = canvas.getAttribute("height") - 0;
+   
+   var filled = new Array(width);
+   for (var i = 0; i < width; i++) {
+     filled[i] = new Array(height);
+   }
+
+   for (var i = 0; i < width; i++) {
+     for (var j = 0; j < height; j++) {
+       filled[i][j] = 0;
+     }
+   }
+   fillc(canvas, 0, 0, filled, 150);
+}
+
+function fillc(canvas, i, j, filled, color) {
+   var width = canvas.getAttribute("width") - 0;
+   var height = canvas.getAttribute("height") - 0;
+
+   
+   if (i >= 0 && i < width && j >= 0 && j < height && filled[i][j] == 0) {
+     if(canvas.getContext) {
+       var ctx = canvas.getContext("2d");
+       ctx.fillStyle = "rgb(" + color + ", " + color + ", " + color + ")";
+       ctx.fillRect(i, j, 10, 10);
+     }
+     
+     filled[i][j] = 1;
+
+     if (color > 127) {
+       fillc(canvas, i-10, j, filled, nextc(color));
+       fillc(canvas, i+10, j, filled, nextc(color));
+       fillc(canvas, i, j-10, filled, nextc(color));
+       fillc(canvas, i, j+10, filled, nextc(color));
+     } else {
+       fillc(canvas, i, j-10, filled, nextc(color));
+       fillc(canvas, i, j+10, filled, nextc(color));
+       fillc(canvas, i-10, j, filled, nextc(color));
+       fillc(canvas, i+10, j, filled, nextc(color));
+     }
+   }
+}
+
+function nextc(color) {
+   var randomGray = Math.max(0, Math.min((color - 40) + Math.floor(Math.random()*80), 255));
+   return randomGray;
+}
+
 function createPatternDiv(divSize, patternSize) {
     "Create a square div of size divSize with random repeating square pattern of size patternSize as background"
     
@@ -75,7 +127,7 @@ function createPatternDiv(divSize, patternSize) {
     var div = createDiv("div" + patternSize, divSize, divSize);
     
     var canvas = createCanvas("canvas" + patternSize, patternSize, patternSize);
-    fillCanvas2(canvas);
+    fillCanvasR(canvas);
     div.style.backgroundImage = "url('" + canvas.toDataURL() + "')";
 
     div.style.marginBottom = "10px";
@@ -89,10 +141,8 @@ window.onload = function() {
         winonload();
     }
 
-    for(var i=100; i<=120; i++) {
-         document.body.appendChild(createPatternDiv(300, i));
-        //document.body.appendChild(createCanvas("c"+i, 100, 100));
-    }
+   document.body.appendChild(createPatternDiv(500, 500));
+
 };
 -->
 </script>
